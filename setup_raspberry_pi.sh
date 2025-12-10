@@ -20,4 +20,4 @@ echo "Testing microphone..."
 arecord -l
 
 echo "Setup complete!"
-echo "Run: python3 raspberry_pi_inference.py"
+echo "Run: python3 raspberry_pi_inference_no_button.py"
