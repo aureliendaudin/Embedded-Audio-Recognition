@@ -14,7 +14,7 @@ recognizer = load_recognizer()
 st.set_page_config(page_title="Voice Command Demo", page_icon="🎙️", layout="centered")
 
 st.title("Commande vocale – Démo Raspberry Pi")
-st.write("Clique sur **Enregistrer** puis dis `on`, `off`, `left` ou `right` vers le micro de la Pi.")
+st.write("Clique sur **Enregistrer** puis dis `on`, `off`, `left`, `right`, `up`, `down` vers le micro de la Pi.")
 
 # état Streamlit pour stocker le dernier label
 if "last_label" not in st.session_state:
@@ -37,23 +37,33 @@ label = st.session_state.last_label
 score = st.session_state.last_score
 
 # ---------- affichage lampe + bascule ----------
-st.markdown("---")
-st.subheader("État visuel")
-if "lamp_on" not in st.session_state:
-    st.session_state.lamp_on = False
 
-if st.button("Allumer / Éteindre"):
-    st.session_state.lamp_on = not st.session_state.lamp_on
+col_lamp, col_toggle = st.columns(2)
 
-# Affichage centré
-st.markdown(
-    f"""
-    <div style='text-align:center;'>
-        <h1 style='font-size:120px; color:{'gold' if st.session_state.lamp_on else 'grey'};'>💡</h1>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# Lampe on/off (simple carré coloré)
+with col_lamp:
+    if label == "on":
+        lamp_color = "yellow"
+        lamp_text = "Allumée"
+    elif label == "off":
+        lamp_color = "gray"
+        lamp_text = "Éteinte"
+    else:
+        lamp_color = "lightgray"
+        lamp_text = "Inconnue"
+
+    st.markdown(
+        f"""
+        <div style="width:80px;height:80px;border-radius:8px;
+                    background-color:{lamp_color};
+                    border:2px solid #333;
+                    display:flex;align-items:center;justify-content:center;
+                    font-weight:bold;">
+            {lamp_text}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # ------------------- Ligne 2 : 2 boutons côte à côte -------------------
 col_left_right, col_up_down = st.columns(2)
